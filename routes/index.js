@@ -35,7 +35,6 @@ router.get("/user/:id", function (req, res, next) {
 router.delete("/user/:id", function (req, res, next) {
   const { id } = req.params;
   const existingUser = todoList.find((user) => user.name === id);
-  console.log(existingUser.name);
   if (existingUser) {
     todoList = todoList.filter((person) => person.name !== id);
     res.send("User deleted");
