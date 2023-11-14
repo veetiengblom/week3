@@ -1,0 +1,91 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  label(for="input-name") name:
+  input(type="text" id="input-name")
+  label(for="input-task") task: 
+  input(type="text" id="input-task")
+  label(for="submit-data")
+  button(type="button" id="submit-data" value="submit") submit
+  br
+  label(for="server-response")
+  p(type="p" id="server-response")
+
+  br
+  br
+  label(for="search-name") search user:
+  input(type="text" id="search-name")
+  label(for="search")
+  button(type="button" id="search") search
+  br
+  br
+  div(id="display-user")
+  button(type="button" id="delete-user" style="display:none") delete user
+
+
+
+  script. 
+    document.getElementById('submit-data').addEventListener('click', function() {
+    const name = document.getElementById("input-name").value;
+    const todo = document.getElementById("input-task").value;
+    fetch('/todo', {
+      method: 'post',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({name, todo}),
+    })
+      .then((response) => response.text())
+      .then(message => {
+        alert(message)
+        location.reload();
+      });
+    });
+
+  script. 
+    document.getElementById('search').addEventListener('click', function() {
+      const name = document.getElementById("search-name").value;
+      const deleteBtn = document.getElementById("delete-user");
+      fetch('/user/' + name)
+      .then((response) => response.json())
+      .then(user => {
+        if (user == "User not found") {
+          alert(user)
+          location.reload();
+        } else {
+          const displayUser = document.getElementById("display-user")
+          displayUser.innerHTML = ''
+
+          const userName = document.createElement("p")
+          userName.id = "userName"
+          const userTodo = document.createElement("p")
+          userTodo.id = "userTodo"
+          userName.textContent = "User: " + name
+          userTodo.textContent = "Todos: " + user
+
+          deleteBtn.style.display = "inline"
+
+          userName.appendChild(userTodo)
+          displayUser.appendChild(userName)
+          document.getElementById('delete-user').addEventListener('click', function() {
+            fetch('/user/' + name, {
+              method: 'delete'
+            })
+              .then((response) => response.text())
+              .then(message => {
+                alert(message)
+                location.reload();
+            })
+          })
+        }
+      });
+    })
+
+    
+
+  
+
+
+    
