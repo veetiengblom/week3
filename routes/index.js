@@ -23,7 +23,9 @@ router.post("/todo", function (req, res, next) {
 
 router.get("/user/:id", function (req, res, next) {
   const { id } = req.params;
-  const existingUser = todoList.find((user) => user.name === id);
+  const existingUser = todoList.find(
+    (user) => user.name.toLowerCase() === id.toLowerCase()
+  );
   if (existingUser) {
     res.send(existingUser.todos);
   } else {
