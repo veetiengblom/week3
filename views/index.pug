@@ -3,6 +3,7 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
+  div(id="message-container")
   label(for="input-name") name:
   input(type="text" id="input-name")
   label(for="input-task") task: 
@@ -39,7 +40,8 @@ block content
     })
       .then((response) => response.text())
       .then(message => {
-        alert(message)
+        const msgContainer = document.getElementById('message-container')
+        msgContainer.textContent = message.toString()
         location.reload();
       });
     });
