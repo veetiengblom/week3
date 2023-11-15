@@ -4,26 +4,28 @@ block content
   h1= title
   p Welcome to #{title}
   div(id="message-container")
-  label(for="input-name") name:
-  input(type="text" id="input-name")
-  label(for="input-task") task: 
-  input(type="text" id="input-task")
-  label(for="submit-data")
-  button(type="button" id="submit-data" value="submit") submit
   br
-  label(for="server-response")
-  p(type="p" id="server-response")
-
-  br
-  br
-  label(for="search-name") search user:
-  input(type="text" id="search-name")
-  label(for="search")
-  button(type="button" id="search") search
-  br
-  br
-  div(id="display-user")
-  button(type="button" id="delete-user" style="display:none") delete user
+  form(id="container")
+    label(for="input-name") name:
+    input(type="text" id="input-name")
+    label(for="input-task") task: 
+    input(type="text" id="input-task")
+    label(for="submit-data")
+    button(type="button" id="submit-data" value="submit") submit
+    br
+    label(for="server-response")
+    p(type="p" id="server-response")
+    br
+    br
+  form(id="search-container")
+    label(for="search-name") search user:
+    input(type="text" id="search-name")
+    label(for="search")
+    button(type="button" id="search") search
+    br
+    br
+    div(id="display-user")
+    button(type="button" id="delete-user" style="display:none") delete user
 
 
 
@@ -42,7 +44,6 @@ block content
       .then(message => {
         const msgContainer = document.getElementById('message-container')
         msgContainer.textContent = message.toString()
-        location.reload();
       });
     });
 
@@ -53,9 +54,10 @@ block content
       fetch('/user/' + name)
       .then((response) => response.json())
       .then(user => {
+        const displayUser = document.getElementById("display-user")
         if (user == "User not found") {
-          alert(user)
-          location.reload();
+          deleteBtn.style.display ="none"
+          displayUser.textContent(user)
         } else {
           const displayUser = document.getElementById("display-user")
           displayUser.innerHTML = ''
@@ -77,9 +79,15 @@ block content
             })
               .then((response) => response.text())
               .then(message => {
-                alert(message)
-                location.reload();
+                const messageContainer = document.getElementById("message-container")
+                if(message == "User deleted") {
+                  messageContainer.textContent = message
+                  displayUser.innerHTML = ''
+                } else {
+                  messageContainer.textContent = "Error"
+                }
             })
+            deleteBtn.style.display = "none"
           })
         }
       });
