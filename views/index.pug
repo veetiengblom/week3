@@ -55,9 +55,11 @@ block content
       .then((response) => response.json())
       .then(user => {
         const displayUser = document.getElementById("display-user")
-        if (user == "User not found") {
+        if (user.text == "User not found") {
           deleteBtn.style.display ="none"
-          displayUser.textContent(user)
+          const msg = document.createElement("p")
+          msg.textContent = user.text
+          displayUser.appendChild(msg)
         } else {
           const displayUser = document.getElementById("display-user")
           displayUser.innerHTML = ''
@@ -66,8 +68,8 @@ block content
           userName.id = "userName"
           const userTodo = document.createElement("p")
           userTodo.id = "userTodo"
-          userName.textContent = "User: " + name
-          userTodo.textContent = "Todos: " + user
+          userName.textContent = "User: " + user.name
+          userTodo.textContent = "Todos: " + user.todos
 
           deleteBtn.style.display = "inline"
 

@@ -27,10 +27,10 @@ router.get("/user/:id", function (req, res, next) {
     (user) => user.name.toLowerCase() === id.toLowerCase()
   );
   if (existingUser) {
-    res.send(existingUser.todos);
+    res.send(existingUser);
   } else {
     const resText = { text: ["User not found"] };
-    res.send(resText.text);
+    res.send(resText);
   }
 });
 

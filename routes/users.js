@@ -10,10 +10,10 @@ router.get("/user/:id", function (req, res, next) {
   const { id } = req.params;
   const existingUser = todoList.find((user) => user.name === id);
   if (existingUser) {
-    res.send(existingUser.todos);
+    res.json(existingUser);
   } else {
     const resText = { text: ["User not found"] };
-    res.send(resText.text);
+    res.json(resText);
   }
 });
 
